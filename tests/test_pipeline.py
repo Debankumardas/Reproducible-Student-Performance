@@ -11,8 +11,19 @@ def test_synthetic_pipeline():
 
     required_columns = ["studytime", "failures", "absences", "G3"]
 
-    assert list(data.columns) == required_columns
-    assert len(data) == 5
+    # Expected output contract
+    expected_rows = 5
+    expected_columns = required_columns
+
+    # Validate output structure
+    assert list(data.columns) == expected_columns
+    assert len(data) == expected_rows
+
+    # Validate missing values
     assert data[required_columns].isna().sum().sum() == 0
+
+    # Validate value constraints
     assert data["studytime"].between(1, 4).all()
+    assert data["failures"].ge(0).all()
+    assert data["absences"].ge(0).all()
     assert data["G3"].between(0, 20).all()
